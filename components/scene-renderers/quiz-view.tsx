@@ -89,6 +89,11 @@ const QuizMathText = memo(function QuizMathText({
   );
 });
 
+function quizOptionMarker(value: string): string {
+  const marker = value.split('::').pop()?.trim();
+  return marker && marker.length <= 3 ? marker : value;
+}
+
 /** Call /api/quiz-grade for a single short-answer question. */
 async function gradeShortAnswerQuestion(
   q: QuizQuestion,
@@ -295,7 +300,7 @@ function SingleChoiceQuestion({
                     'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500',
                 )}
               >
-                {opt.value}
+                {quizOptionMarker(opt.value)}
               </span>
               <span
                 className={cn(
@@ -400,7 +405,11 @@ function MultipleChoiceQuestion({
                     'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500',
                 )}
               >
-                {!isReview && isSelected ? <Check className="w-3.5 h-3.5" /> : opt.value}
+                {!isReview && isSelected ? (
+                  <Check className="w-3.5 h-3.5" />
+                ) : (
+                  quizOptionMarker(opt.value)
+                )}
               </span>
               <span
                 className={cn(
